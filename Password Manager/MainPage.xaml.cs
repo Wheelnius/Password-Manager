@@ -1,6 +1,8 @@
 ﻿using Password_Manager.Classes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -17,6 +19,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.ApplicationModel.DataTransfer;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -36,7 +39,7 @@ namespace Password_Manager
 
         private Letter[] fullArray;
 
-
+        
         public MainPage()
         {
             this.InitializeComponent();
@@ -471,5 +474,85 @@ namespace Password_Manager
 
         }
 
+        private void TextBox3_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBox3.Text))
+            {
+                this.listBox.ItemsSource = null;
+                this.listBox.ItemsSource = PWS;
+                return;
+            }
+            this.listBox.ItemsSource = PWS.Where(pw => pw.ID1.ToString().IndexOf(textBox3.Text, StringComparison.OrdinalIgnoreCase) != -1);
+        }
+
+        private void CopyPW_Click(object sender, RoutedEventArgs e)
+        {
+            Button copy = (Button)sender;
+
+            if (copy.DataContext is Password)
+            {
+                Password p = (Password)copy.DataContext;
+                DataPackage dp = new DataPackage();
+                dp.RequestedOperation = DataPackageOperation.Copy;
+                dp.SetText(p.ID2);
+                Clipboard.SetContent(dp);
+            }
+        
+        }
+
+        private void StackPanel_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            var temp = (StackPanel)sender;
+            if (temp.DataContext is Password)
+            {
+                Password p = (Password)temp.DataContext;
+
+                if (p.ID2 == "Hidden") return;
+
+                string tempPw = p.ID2;
+                p.ID2 = p.PlaceHolder;
+                p.PlaceHolder = tempPw;
+                ((StackPanel)sender).DataContext = p;
+            }
+        }
+
+        private void StackPanel_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            var temp = (StackPanel)sender;
+            if (temp.DataContext is Password)
+            {
+                Password p = (Password)temp.DataContext;
+
+                if (p.PlaceHolder == "Hidden") return;
+
+                string tempPw = p.ID2;
+                p.ID2 = p.PlaceHolder;
+                p.PlaceHolder = tempPw;
+                ((StackPanel)sender).DataContext = p;
+            }
+
+        }
+
+        private void StackPanel_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            var temp = (StackPanel)sender;
+            if (temp.DataContext is Password)
+            {
+                Password p = (Password)temp.DataContext;
+
+                if (p.PlaceHolder == "Hidden") return;
+
+                string tempPw = p.ID2;
+                p.ID2 = p.PlaceHolder;
+                p.PlaceHolder = tempPw;
+                ((StackPanel)sender).DataContext = p;
+            }
+
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            listBox.SelectedIndex = -1;
+        }
     }
 }

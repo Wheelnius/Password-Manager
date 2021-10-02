@@ -41,7 +41,7 @@ namespace Password_Manager.Classes
                 MappedPassword finishedMP = createSingleMapping(PWS.ElementAt(i));
                 mappings.AddFirst(finishedMP.getID1() + " " + finishedMP.getLineMap());
                 oneLongFuckingString += finishedMP.getID1() + " " + finishedMP.getLineMap() + '\n';
-                System.Diagnostics.Debug.WriteLine(finishedMP.getID1() + " " + PWS.ElementAt(i).ID2 + " " + finishedMP.getLineMap());
+                //System.Diagnostics.Debug.WriteLine(finishedMP.getID1() + " " + PWS.ElementAt(i).ID2 + " " + finishedMP.getLineMap());
             }
 
             return oneLongFuckingString;
@@ -140,7 +140,7 @@ namespace Password_Manager.Classes
             for (int i=0; i<mappings.Length; i++)
             {
                 // DEBUG
-                System.Diagnostics.Debug.WriteLine(mappings[i]);
+                //System.Diagnostics.Debug.WriteLine(mappings[i]);
                 Password tmp = retrieveSinglePassword(mappings[i]);
                 if (tmp != null)
                 {

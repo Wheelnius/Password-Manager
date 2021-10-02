@@ -44,7 +44,7 @@ namespace Password_Manager.Classes
                     try
                     {
                         int integer = dataReader.ReadInt32();
-                        System.Diagnostics.Debug.WriteLine(integer);
+                        //System.Diagnostics.Debug.WriteLine(integer);
                         integer = Math.Abs(integer);
                         int i1 = integer / 10000000;
                         while (i1 > 128) i1 /= 2;

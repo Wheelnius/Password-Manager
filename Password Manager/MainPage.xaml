@@ -8,7 +8,7 @@
     xmlns:local="using:Password_Manager.Classes"
     mc:Ignorable="d" Width="631" Height="694" VerticalAlignment="Bottom" MinWidth="560" MinHeight="653" Foreground="White" Background="Black">
     <Grid x:Name="Base_Grid" HorizontalAlignment="Center" Height="694" VerticalAlignment="Center" Width="631">
-        <Grid x:Name="Settings" HorizontalAlignment="Center" Height="694" VerticalAlignment="Center" Width="631" Visibility="Visible">
+        <Grid x:Name="Settings" HorizontalAlignment="Center" Height="694" VerticalAlignment="Center" Width="631" Visibility="Visible" d:IsHidden="True">
             <Rectangle HorizontalAlignment="Center" Height="439" Margin="0,245,0,0" VerticalAlignment="Top" Width="611" Fill="{ThemeResource SystemControlHighlightListLowRevealBackgroundBrush}"/>
             <Rectangle HorizontalAlignment="Center" Height="226" VerticalAlignment="Top" Width="611" Margin="0,10,0,0" Fill="{ThemeResource SystemControlHighlightListLowRevealBackgroundBrush}"/>
             <Button x:Name="button7" Click="main" Content="" HorizontalAlignment="Left" Height="40" Margin="39,39,0,0" VerticalAlignment="Top" Width="40">
@@ -44,7 +44,7 @@
             <TextBlock x:Name="textBlock7" HorizontalAlignment="Left" TextAlignment="Center" Height="29" Margin="484,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" FontSize="9" Opacity="0.5" FocusVisualPrimaryBrush="White" Foreground="White"><Run Text="Recommended"/><LineBreak/><Run Text="min: 5000      max: 100000"/></TextBlock>
 
         </Grid>
-        <Grid x:Name="Main" MinWidth="560" MinHeight="653" Margin="32,26,31,-11" Visibility="Visible" d:IsHidden="True">
+        <Grid x:Name="Main" MinWidth="560" MinHeight="653" Margin="32,26,31,-11" Visibility="Visible">
             <Grid HorizontalAlignment="Left" Width="218" MinHeight="300" MinWidth="187" VerticalAlignment="Bottom" Height="326">
                 <Button 
                 x:Name="button2" 
@@ -90,13 +90,32 @@
                 x:Name="listBox" 
                 Height="238" 
                 Margin="31,136,29,0" 
-                VerticalAlignment="Top" Background="#FF191919" Grid.Column="1" Grid.RowSpan="3">
+                VerticalAlignment="Top" Background="#FF191919" Grid.Column="1" Grid.RowSpan="3" SelectionChanged="ListBox_SelectionChanged">
 
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="local:Password">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{x:Bind Path=ID1}" />
-                                <TextBlock Text="{x:Bind Path=ID2}" />
+                            <StackPanel Orientation="Horizontal" PointerPressed="StackPanel_PointerPressed" PointerReleased="StackPanel_PointerReleased" PointerExited="StackPanel_PointerExited">
+                                <Grid VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Width="280">
+                                    <TextBlock Text="{x:Bind Path=ID1}" Margin="10 0 10 0"/>
+                                    <TextBlock Text="{x:Bind Path=PlaceHolder}" Margin="10 20 10 0"/>
+                                    <Button x:Name="copyPW" Click="CopyPW_Click" Width="20" Height="25" HorizontalAlignment="Right" BorderBrush="{x:Null}">
+                                        
+                                        <Button.Resources>
+                                            <ResourceDictionary>
+                                                <ResourceDictionary.ThemeDictionaries>
+                                                    <ResourceDictionary x:Key="Dark">
+                                                        <ImageBrush x:Key="ButtonBackgroundPointerOver" ImageSource="/Assets/copy_cb_black.png"></ImageBrush>
+                                                        <ImageBrush x:Key="ButtonBackground" ImageSource="/Assets/copy_cb_grey.png"></ImageBrush>
+                                                        <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+                                                        <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent"/>
+          
+                                                    </ResourceDictionary>
+                                                </ResourceDictionary.ThemeDictionaries>
+                                            </ResourceDictionary>
+                                        </Button.Resources>
+
+                                    </Button>
+                                </Grid>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -125,15 +144,29 @@
                 <Button 
                 x:Name="button5" 
                 Click="remapItems"
-                Content="Remap items" 
+                Content="" 
                 Grid.ColumnSpan="2" 
                 HorizontalAlignment="Left" 
                 IsEnabled="false"
                 Height="34" 
-                Margin="106,108,0,0" 
+                Margin="31,110,0,0" 
                 Grid.Row="2" 
                 VerticalAlignment="Top" 
-                Width="170"/>
+                Width="37" BorderBrush="{x:Null}">
+                    <Button.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.ThemeDictionaries>
+                                <ResourceDictionary x:Key="Dark">
+                                    <ImageBrush x:Key="ButtonBackgroundPointerOver" ImageSource="/Assets/refresh_black.png"></ImageBrush>
+                                    <ImageBrush x:Key="ButtonBackground" ImageSource="/Assets/refresh_grey.png"></ImageBrush>
+                                    <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent"/>
+                                </ResourceDictionary>
+                            </ResourceDictionary.ThemeDictionaries>
+                        </ResourceDictionary>
+                    </Button.Resources>
+                </Button>
+                <TextBox x:Name="textBox3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="34" Margin="103,110,0,0" Grid.Row="2" Text="" VerticalAlignment="Top" Width="178" PlaceholderText="Search" TextChanged="TextBox3_TextChanged"/>
             </Grid>
             <Grid Height="202" VerticalAlignment="Top" MinWidth="500" MinHeight="140" Background="#4C5D5A5A" FocusVisualPrimaryBrush="White" FocusVisualSecondaryBrush="#99FFFFFF" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
